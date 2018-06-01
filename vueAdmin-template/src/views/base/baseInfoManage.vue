@@ -22,48 +22,67 @@
           {{scope.row.arriveName}}
         </span>
       </template>       
+    </el-table-column>      
+    <el-table-column  align="center" label="到达时间" >
+      <template slot-scope="scope">               
+        <span>{{scope.row.arriveDate}} </span>               
+      </template>
     </el-table-column>
-          <el-table-column  align="center" label="到达时间" >
-            <template slot-scope="scope">               
-                <span>{{scope.row.arriveDate |parseTime('{y}-{m}-{d} {h}:{i}') }} </span>               
-            </template>
-          </el-table-column>
-          <el-table-column  align="center" label="轨道" >
-            <template slot-scope="scope">                
-              <span>{{scope.row.trackNum}}</span>              
-            </template>
-          </el-table-column>
-          <el-table-column  align="center" label="出发时间" >
-            <template slot-scope="scope">                
-              <span>{{scope.row.outSetDate |parseTime('{y}-{m}-{d} {h}:{i}')}}</span>              
-            </template>
-          </el-table-column>
-          <el-table-column  align="center" label="状态" >
-            <template slot-scope="scope">                
-              <span>{{scope.row.status}}</span>              
-            </template>
-      </el-table-column>			         
+    <el-table-column  align="center" label="轨道" >
+      <template slot-scope="scope">                
+        <span>{{scope.row.trackNum}}</span>              
+      </template>
+    </el-table-column>
+    <el-table-column  align="center" label="出发时间" >
+      <template slot-scope="scope">                
+        <span>{{scope.row.outSetDate}}</span>              
+      </template>
+    </el-table-column>
+    <el-table-column  align="center" label="状态" >
+      <template slot-scope="scope">                
+        <span>{{scope.row.status}}</span>              
+      </template>
+    </el-table-column>	
+	  <el-table-column align="center" label="操作">
+      <template slot-scope="scope"> 
+        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+        <el-button type="primary" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+      </template>
+	  </el-table-column>	         
 	</el-table>
+
+    <div class="pagination-container">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.pageIndex" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+
 		<!-- 列车信息表格 End-->
     <!--对话框-->
-<el-dialog title="基础信息" :visible.sync="dialogFormVisible" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+<el-dialog title="基础信息" :visible.sync="dialogFormVisible"  width="40%">
   <el-form :model="trainInfo">
     <el-form-item label="到达车次">
       <el-input type="text" v-model="trainInfo.arriveName"> </el-input>
     </el-form-item>
-    <el-form-item lable="到达时间">
+    <el-form-item>
+      <label class="el-form-item">到达时间</label>
       <el-date-picker type="datetime" v-model="trainInfo.arriveDate"></el-date-picker>
     </el-form-item>
     <el-form-item label="轨道">
-      <el-input v-model="trainInfo.trackNum"></el-input>
+      <el-input v-model="trainInfo.trackNum" type="number"></el-input>
     </el-form-item>
-    <el-form-item lable="出发时间">
+    <el-form-item>
+      <label class="el-form-item">出发时间</label>
       <el-date-picker type="datetime" v-model="trainInfo.outSetDate"></el-date-picker>
     </el-form-item>
     <el-form-item label="出发车次">
       <el-input v-model="trainInfo.outSetName"></el-input>
     </el-form-item>
    </el-form>
+   <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
+        <el-button v-else type="primary" @click="updateData">保存</el-button>
+   </div>
 </el-dialog>
 <!---->
   </div>
@@ -158,7 +177,13 @@ export default {
       this.dialogStatus = "create";
       this.dialogFormVisible = true;
     },
-    handleUploade() {}
+    handleUploade() {},
+    createData(){},
+    updateData(){},
+    handleCurrentChange(){},
+    handleSizeChange(){},
+    handleDelete(){},
+    handleUpdate(){}
   }
 };
 </script>
